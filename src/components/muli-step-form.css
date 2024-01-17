@@ -1,0 +1,20 @@
+.main-page {
+  height: 50vh;
+  overflow: hidden;
+  min-width: 50vw;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 5px;
+  padding-bottom: 5%;
+}
+
+.first-form {
+  height: max-content;
+}
+
+.start-form {
+  height: max-content;
+  padding: 5px;
+}
