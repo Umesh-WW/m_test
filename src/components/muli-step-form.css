@@ -18,3 +18,10 @@
   height: max-content;
   padding: 5px;
 }
+
+.table-comp {
+  height: max-content;
+  margin-top: 24px;
+  padding: 30px;
+  padding-top: 10px;
+}

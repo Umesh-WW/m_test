@@ -1,12 +1,9 @@
-// StartComponent.tsx
 import React from "react";
 import { useDispatch } from "react-redux";
 import { setStep } from "../Store/formSlice";
 
 import { Paper, Button } from "@mui/material";
 import "./muli-step-form.css";
-
-///
 
 const StartComponent: React.FC = () => {
   const dispatch = useDispatch();

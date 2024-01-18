@@ -1,8 +1,7 @@
-// Step1Form.tsx
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
-import { setStep, setData } from "../Store/formSlice";
+import {  setFormData } from "../Store/formSlice";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 import {
@@ -23,7 +22,6 @@ import {
 import * as yup from "yup";
 import "./muli-step-form.css";
 
-///
 const schema = yup.object().shape({
   name: yup
     .string()
@@ -35,8 +33,8 @@ const schema = yup.object().shape({
     .positive("Age must be a positive integer"),
   sex: yup
     .string()
-    .required("Sex is required")
-    .oneOf(["Male", "Female"], "Invalid value for Sex"),
+    .required("Gender is required")
+    .oneOf(["Male", "Female"], "Invalid value for Gender"),
   mobile: yup
     .string()
     .transform((value) => {
@@ -71,8 +69,7 @@ const Step1Form: React.FC = () => {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onSubmit = (data: Record<string, any>) => {
-    dispatch(setData(data));
-    dispatch(setStep(2));
+    dispatch(setFormData({data: data, page: 1}));
   };
   return (
     <Paper className="main-page first-form">

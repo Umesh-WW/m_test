@@ -1,8 +1,7 @@
-// Step2Form.tsx
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
-import { setStep, setData } from "../Store/formSlice";
+import { setFormData } from "../Store/formSlice";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 import {
@@ -32,11 +31,10 @@ const schema = yup.object().shape({
   state: yup.string().notRequired(),
   city: yup.string().notRequired(),
   country: yup.string().notRequired(),
-
   pincode: yup
     .string()
     .transform((value) => {
-      return isNaN(value) || value?.length == 0 ? undefined : value;
+      return  value?.length == 0 ? undefined : value;
     })
     .optional()
     .matches(/^\d+$/, "Invalid Pincode"),
@@ -56,8 +54,7 @@ const Step2Form: React.FC = () => {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onSubmit = (data: Record<string, any>) => {
-    dispatch(setData(data));
-    dispatch(setStep(0));
+    dispatch(setFormData({ data: data, page: 2 }));
   };
 
   const [countries, setCountries] = useState<CountryOption[]>([]);
