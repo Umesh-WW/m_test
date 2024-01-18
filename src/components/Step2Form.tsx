@@ -15,6 +15,7 @@ import {
   Autocomplete,
   TextField,
   CircularProgress,
+  Typography,
 } from "@mui/material";
 import * as yup from "yup";
 import "./muli-step-form.css";
@@ -202,9 +203,23 @@ const Step2Form: React.FC = () => {
             isOptionEqualToValue={(option, value) => option?.id === value?.id}
           />
 
-          <FormHelperText>{errors.country?.message}</FormHelperText>
+          <FormHelperText error>{errors.country?.message}</FormHelperText>
 
-          {loadingCountries && <CircularProgress size={20} />}
+          <FormHelperText
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "left",
+              height: "3ch",
+            }}
+          >
+            {loadingCountries && (
+              <>
+                <CircularProgress size={20} />
+                <Typography pl={3}> Loading...</Typography>
+              </>
+            )}
+          </FormHelperText>
         </FormControl>
         <Button fullWidth variant="outlined" type="submit">
           Complete
