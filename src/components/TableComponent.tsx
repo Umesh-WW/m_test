@@ -14,7 +14,7 @@ const columns = [
   { data: "mobile", title: "Mobile" },
   { data: "govtIdType", title: "Govt. Id Type" },
   { data: "govtId", title: "Govt. Id " },
-  { data: "address", title: "Name" },
+  { data: "address", title: "Address" },
   { data: "state", title: "State" },
   { data: "city", title: "City" },
   { data: "country", title: "Country" },
@@ -23,16 +23,17 @@ const columns = [
 
 const TableComponent: React.FC = () => {
   const tableRef = useRef<HTMLTableElement>(null);
-  const data1 = useSelector((state: RootState) => state.form.data);
+  const data = useSelector((state: RootState) => state.form.data);
+  console.log("data", data);
   useEffect(() => {
     const dt = new DataTables(tableRef.current!, {
       columns: columns,
-      data: data1,
+      data: data,
     });
     return () => {
       dt.destroy();
     };
-  }, [data1]);
+  }, [data]);
 
   return (
     <Paper className="main-page table-comp">

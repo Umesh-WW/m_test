@@ -2,16 +2,14 @@ import { createSlice } from '@reduxjs/toolkit';
 
 interface FormState {
   step: number;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  data: Record<string, any>[];
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  fistFormData: Record<string, any>
+  data: Record<string, string>[];
+   personDetailData: Record<string, string>
 }
 
 const initialState: FormState = {
   step: 0,
   data: [],
-fistFormData:{}
+  personDetailData:{}
 };
 
 const formSlice = createSlice({
@@ -23,11 +21,11 @@ const formSlice = createSlice({
     },
     setFormData: (state, action) => {
       if(action.payload.page == 1){
-        state.fistFormData =  action.payload.data ; 
+        state.personDetailData =  action.payload.data ; 
         state.step = 2                                        
       }else if(action.payload.page == 2){
-        state.data[state.data.length] = { ...state.fistFormData ,...action.payload.data }
-        state.fistFormData = {}
+        state.data[state.data.length] = { ...state.personDetailData ,...action.payload.data }
+        state.personDetailData = {}
         state.step = 0         
       }
     },

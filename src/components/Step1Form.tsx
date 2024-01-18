@@ -1,7 +1,7 @@
 import React from "react";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
-import {  setFormData } from "../Store/formSlice";
+import { setFormData } from "../Store/formSlice";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 import {
@@ -21,6 +21,7 @@ import {
 } from "@mui/material";
 import * as yup from "yup";
 import "./muli-step-form.css";
+import HorizontalLinearAlternativeLabelStepper from "./StepperComponent";
 
 const schema = yup.object().shape({
   name: yup
@@ -38,10 +39,10 @@ const schema = yup.object().shape({
   mobile: yup
     .string()
     .transform((value) => {
-      return isNaN(value) || value?.length == 0 ? undefined : value;
+      return isNaN(value) || value?.length == 0 ? null : value;
     })
     .matches(/^(\+91|91)?[6789]\d{9}$/, "Invalid Indian Mobile Number")
-    .notRequired(),
+    .nullable(),
   govtIdType: yup
     .string()
     .oneOf(["Aadhar", "PAN", ""], "Invalid value for Govt Issued ID Type")
@@ -56,6 +57,15 @@ const schema = yup.object().shape({
   }),
 });
 
+interface PersonalDetailsFormField {
+  mobile?: string | null;
+  govtIdType?: "" | "Aadhar" | "PAN";
+  govtId?: string | undefined;
+  name: string;
+  age: number;
+  sex: string;
+}
+
 const Step1Form: React.FC = () => {
   const {
     register,
@@ -67,13 +77,14 @@ const Step1Form: React.FC = () => {
 
   const dispatch = useDispatch();
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const onSubmit = (data: Record<string, any>) => {
-    dispatch(setFormData({data: data, page: 1}));
+  const onSubmit: SubmitHandler<PersonalDetailsFormField> = (data) => {
+    console.log("data", data);
+    dispatch(setFormData({ data: data, page: 1 }));
   };
   return (
     <Paper className="main-page first-form">
-      <Box component={"h1"}> STEP 1</Box>
+      <HorizontalLinearAlternativeLabelStepper />
+      <Box component={"h2"}> Personal Details </Box>
       <Box
         component={"form"}
         className="form-login"
@@ -81,7 +92,7 @@ const Step1Form: React.FC = () => {
         justifyContent={"center"}
         flexDirection={"column"}
         sx={{
-          paddingTop: "6%",
+          paddingTop: "2%",
           paddingLeft: "10%",
           paddingRight: "10%",
           gap: "40px",
@@ -108,7 +119,7 @@ const Step1Form: React.FC = () => {
 
         <FormControl fullWidth error={!!errors.age?.message}>
           <InputLabel variant="standard" disableAnimation shrink htmlFor="age">
-            age
+            Age
           </InputLabel>
           <Input id="age" {...register("age", { required: true })} />
           <FormHelperText margin={"dense"} variant="standard" error id="age">
@@ -144,7 +155,7 @@ const Step1Form: React.FC = () => {
           >
             Mobile
           </InputLabel>
-          <Input id="mobile" {...register("mobile", { required: false })} />
+          <Input id="mobile" {...register("mobile")} />
           <FormHelperText margin={"dense"} variant="standard" error id="mobile">
             {errors.mobile?.message}
           </FormHelperText>

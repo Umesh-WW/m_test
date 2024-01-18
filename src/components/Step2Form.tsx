@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { setFormData } from "../Store/formSlice";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -19,24 +19,34 @@ import {
 import * as yup from "yup";
 import "./muli-step-form.css";
 import axios from "axios";
+import HorizontalLinearAlternativeLabelStepper from "./StepperComponent";
 
 //------------------
 interface CountryOption {
   country: string;
   id: string;
 }
+
+interface AdressFormFields {
+  address?: yup.Maybe<string>;
+  state?: yup.Maybe<string>;
+  city?: yup.Maybe<string>;
+  country?: string | undefined;
+  pincode?: string | null;
+}
+
 ///
 const schema = yup.object().shape({
   address: yup.string().notRequired(),
   state: yup.string().notRequired(),
   city: yup.string().notRequired(),
-  country: yup.string().notRequired(),
+  country: yup.string().optional(),
   pincode: yup
     .string()
     .transform((value) => {
-      return  value?.length == 0 ? undefined : value;
+      return value?.length == 0 ? null : value;
     })
-    .optional()
+    .nullable()
     .matches(/^\d+$/, "Invalid Pincode"),
 });
 
@@ -52,8 +62,7 @@ const Step2Form: React.FC = () => {
 
   const dispatch = useDispatch();
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const onSubmit = (data: Record<string, any>) => {
+  const onSubmit: SubmitHandler<AdressFormFields> = (data) => {
     dispatch(setFormData({ data: data, page: 2 }));
   };
 
@@ -86,7 +95,8 @@ const Step2Form: React.FC = () => {
 
   return (
     <Paper className="main-page first-form">
-      <Box component={"h1"}> STEP 2</Box>
+      <HorizontalLinearAlternativeLabelStepper />
+      <Box component={"h2"}> Address Detail</Box>
       <Box
         component={"form"}
         className="form-login"
@@ -94,7 +104,7 @@ const Step2Form: React.FC = () => {
         justifyContent={"center"}
         flexDirection={"column"}
         sx={{
-          paddingTop: "6%",
+          paddingTop: "2%",
           paddingLeft: "10%",
           paddingRight: "10%",
           gap: "40px",
@@ -111,7 +121,7 @@ const Step2Form: React.FC = () => {
             size="normal"
             htmlFor="username"
           >
-            address
+            Address
           </InputLabel>
           <Input {...register("address", { required: true })} />
           <FormHelperText
@@ -131,7 +141,7 @@ const Step2Form: React.FC = () => {
             shrink
             htmlFor="state"
           >
-            state
+            State
           </InputLabel>
           <Input id="state" {...register("state")} />
           <FormHelperText margin={"dense"} variant="standard" error id="state">
@@ -141,7 +151,7 @@ const Step2Form: React.FC = () => {
 
         <FormControl fullWidth error={!!errors.city?.message}>
           <InputLabel variant="standard" disableAnimation shrink htmlFor="city">
-            city
+            City
           </InputLabel>
           <Input id="city" {...register("city")} />
           <FormHelperText margin={"dense"} variant="standard" error id="city">
@@ -176,7 +186,11 @@ const Step2Form: React.FC = () => {
             clearOnBlur
             getOptionLabel={(option) => option.country}
             renderInput={(params) => (
-              <TextField {...params} placeholder="Country" />
+              <TextField
+                {...params}
+                placeholder="Country"
+                {...register("country")}
+              />
             )}
             onChange={(
               _e: React.SyntheticEvent,
