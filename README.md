@@ -1,7 +1,7 @@
 # m_test
 task details - https://drive.google.com/file/d/1vHFLbXdp0T0FxjTv-eyQsUsxOog_SuxL/view 
 
-#tech stack
+# tech stack
 Requirements:
 a) Using ReactJS & Redux, create a Two-Step User Registration Form.
 Use Material-UI to make UI components.
